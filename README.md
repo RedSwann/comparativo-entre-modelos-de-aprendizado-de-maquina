@@ -12,10 +12,6 @@ Projeto acadêmico que compara algoritmos de aprendizado de máquina na **detec�
 
 Comparar o desempenho dos três modelos utilizando métricas como **acurácia, precisão, recall, F1-score e tempo de treinamento**.
 
-## Resultados
-
-O **XGBoost** apresentou o melhor desempenho geral, alcançando **79,46% de acurácia**.
-
 ## Tecnologias utilizadas
 
 - Python
