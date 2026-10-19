@@ -1,2 +1,27 @@
-# comparativo-entre-modelos-de-aprendizado-de-maquina
-Projeto acadêmico de análise comparativa entre Árvore de Decisão, Random Forest e XGBoost para detecção de ataques em redes de computadores.
+# Comparativo entre Modelos de Aprendizado de Máquina
+
+Projeto acadêmico que compara algoritmos de aprendizado de máquina na **detecção de ataques em redes de computadores**, utilizando o conjunto de dados **NSL-KDD**.
+
+## Modelos utilizados
+
+- Árvore de Decisão
+- Random Forest
+- XGBoost
+
+## Objetivo
+
+Comparar o desempenho dos três modelos utilizando métricas como **acurácia, precisão, recall, F1-score e tempo de treinamento**.
+
+## Resultados
+
+O **XGBoost** apresentou o melhor desempenho geral, alcançando **79,46% de acurácia**.
+
+## Tecnologias utilizadas
+
+- Python
+- Google Colab
+- HTML, CSS e JavaScript
+
+## Acesse o projeto
+
+[**Clique aqui para visualizar o site**](https://redswann.github.io/comparativo-entre-modelos-de-aprendizado-de-maquina/)
