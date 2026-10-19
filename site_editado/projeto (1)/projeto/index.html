@@ -1,0 +1,435 @@
+<<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparativo entre Modelos de Aprendizado de Máquina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:"Inter", sans-serif;line-height:1.7;color:#fff;background:linear-gradient(to bottom, #000314, #012177)}
+nav{position:fixed;top:0;left:0;right:0;min-height:70px;padding:12px max(20px, calc((100vw - 1050px)/2));background:#000314d9;display:flex;align-items:center;justify-content:center;gap:20px;box-shadow:0 2px 6px #00468c4d;backdrop-filter:blur(10px);z-index:10}
+nav .links{display:flex;gap:22px;flex-wrap:wrap;justify-content:center}
+nav .links a{color:#bbdefb;font-weight:600;text-decoration:none}
+nav a:hover,nav a:focus-visible{color:#fff;text-decoration:underline}
+main{max-width:1000px;margin:4rem auto 2rem;padding:2rem;border-radius:16px;background-color:rgba(128,128,128,.041)}
+.perfil{min-height:75vh;padding:130px 7% 60px;display:flex;justify-content:center;align-items:center;text-align:center}
+.texto{display:flex;flex-direction:column;align-items:center;gap:1rem;max-width:820px}
+.etiqueta{color:#90caf9;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem}
+h1{font-size:clamp(2rem, 4vw, 2.8rem);line-height:1.2;color:#64b5f6;margin:0}
+.texto p{max-width:760px;font-size:1.12rem;color:#fff;margin:0}
+.botão{display:flex;gap:1rem}
+.contato{display:inline-block;padding:.7rem 1.5rem;border-radius:30px;background:#1976d2;color:#e3f2fd;font-weight:600;text-decoration:none;transition:.3s}
+.contato:hover{background:#2b95ff;transform:scale(1.05)}
+.secao{padding:45px 0 90px;scroll-margin-top:85px}
+h2{text-align:center;color:#bbdefb;font-size:1.8rem;margin-bottom:10px}
+.instrucao{text-align:center;color:#dbeafe;margin-bottom:30px}
+.botoes{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:18px}
+.modelo{min-height:135px;padding:22px 12px;border:1px solid #5b8ac2;border-radius:16px;background:#0b2d60;color:#fff;font:600 1rem "Inter", sans-serif;cursor:pointer;transition:transform .25s, background .25s, box-shadow .25s}
+.modelo:hover{transform:translateY(-5px);background:#1554a0;box-shadow:0 8px 22px #0007}
+.modelo.ativo{background:#1976d2;border-color:#bbdefb}
+.modelo:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.modelo .simbolo{display:block;font-size:2rem;margin-bottom:10px}
+.explicacoes{margin-top:20px}
+.painel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .35s ease, opacity .35s ease}
+.painel.aberto{grid-template-rows:1fr;opacity:1}
+.painel-interior{overflow:hidden}
+.painel-conteudo{background:#071b3a;border:1px solid #477ab6;border-radius:16px;padding:24px 28px}
+.painel h3{color:#90caf9;margin:0 0 12px;font-size:1.4rem}
+.painel p{margin:0 0 12px;color:#e3f2fd}
+.painel p:last-child{margin-bottom:0}
+.painel.animar-texto h3,.painel.animar-texto p{animation:surgirTexto .5s ease both}
+.painel.animar-texto p:nth-child(2){animation-delay:.09s}
+.painel.animar-texto p:nth-child(3){animation-delay:.18s}
+@keyframes surgirTexto {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+.bloco-artigo{border-top:1px solid rgba(144,202,249,.22);padding:48px 0;scroll-margin-top:100px}
+.bloco-artigo h2{margin-top:0}
+.bloco-artigo h3{color:#90caf9}
+.placeholder{color:#c5d8ee;border:1px dashed #6686ad;border-radius:12px;padding:18px;background:rgba(7,27,58,.45);margin:16px 0}
+.cartao{border:1px solid #477ab6;border-radius:16px;padding:20px;background:#071b3a}
+.cartao h3{margin-top:0}
+.foto-autor{width:100px;height:100px;border:2px dashed #90caf9;border-radius:50%;display:grid;place-items:center;color:#dbeafe;font-size:.85rem}
+.tabela-rolagem{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:660px}
+th,td{padding:12px;border:1px solid #477ab6;text-align:left}
+th{background:#0b2d60;color:#fff}
+td{background:rgba(7,27,58,.65)}
+figure{margin:18px 0}
+figcaption{color:#dbeafe;font-size:.9rem;margin-top:8px}
+.espaco-figura{min-height:155px;border:1px dashed #6686ad;border-radius:12px;display:grid;place-items:center;text-align:center;padding:20px;background:rgba(7,27,58,.45)}
+a{color:#90caf9}
+@media (max-width: 750px){nav .links{gap:10px 16px}
+nav .links a{font-size:.8rem}}
+footer{padding:25px;text-align:center;color:#e3f2fd;border-top:1px solid #64b5f6;background:#0d304a}
+@media (max-width: 750px){nav{padding:12px 20px}
+nav .links{gap:14px;font-size:.85rem}
+.perfil{min-height:auto;padding:190px 24px 75px;text-align:center}
+.texto{align-items:center}
+main{margin:0 15px 2rem;padding:1.25rem}
+.botoes{grid-template-columns:1fr}
+.modelo{min-height:85px}
+.secao{scroll-margin-top:100px}}
+main{width:calc(100% - 64px);max-width:1120px;margin:4rem auto 3rem;padding:1.5rem 2rem}
+main > section{padding-top:85px;padding-bottom:115px}
+main > section + section{margin-top:38px}
+@media (max-width: 750px){main{width:calc(100% - 24px);margin:1rem auto 2rem;padding:1rem}
+main > section{padding-top:65px;padding-bottom:80px}
+main > section + section{margin-top:20px}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}
+*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-delay:0ms!important}}
+.painel[hidden]{display:none}
+.painel-conteudo .placeholder{margin:12px 0}
+.secao,.bloco-artigo{scroll-margin-top:110px}
+.botao-autores{display:block;margin:20px auto;min-width:230px;padding:16px 24px;border:1px solid #5b8ac2;border-radius:16px;background:#0b2d60;color:white;font:600 1rem Inter,sans-serif;cursor:pointer;transition:background .25s,transform .25s}
+.botao-autores:hover{background:#1976d2;transform:translateY(-3px)}
+.botao-autores:focus-visible{outline:3px solid white}
+.area-autores{max-width:780px;margin:0 auto}
+.painel-conteudo > :first-child{margin-top:0}
+.perfil{min-height:100svh;padding-top:115px;padding-bottom:65px;scroll-margin-top:0}
+main{margin-top:0}
+main > section{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:90px;scroll-margin-top:0}
+main > section + section{margin-top:0}
+@media (max-width: 750px){.perfil{min-height:100svh;padding:130px 20px 65px}
+main > section{min-height:100svh;padding-top:120px;padding-bottom:65px;scroll-margin-top:0}
+main > section + section{margin-top:0}}
+main{width:100%;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+main > section{width:100%;padding-left:clamp(28px, 8vw, 140px);padding-right:clamp(28px, 8vw, 140px)}
+main > section#autores{min-height:0;padding-top:65px;padding-bottom:70px}
+#autores .area-autores{width:100%}
+@media (max-width: 750px){main{width:100%;margin:0;padding:0}
+main > section{padding-left:26px;padding-right:26px}
+main > section#autores{min-height:0;padding-top:50px;padding-bottom:55px}}
+main > section.bloco-artigo{border-top:none}
+main > section{background:transparent}
+body{background:linear-gradient(180deg, #000314 0%, #061537 45%, #012177 100%);background-attachment:fixed}
+@media (max-width: 750px){body{background-attachment:scroll}}
+.explicacoes{margin-top:26px}
+.painel-conteudo{background:rgba(255, 255, 255, .035);border:0;border-left:3px solid #7db8f0;border-radius:0 12px 12px 0;padding:clamp(22px, 3.5vw, 40px);box-shadow:none}
+.painel h3{font-size:clamp(1.4rem, 2.3vw, 1.85rem);line-height:1.3;color:#d3eaff;margin-bottom:22px}
+.painel p{max-width:88ch;line-height:1.85;color:#e1eaf6;margin-bottom:20px}
+.painel p strong{color:#a9d6ff;font-weight:650}
+.painel p:last-child{margin-bottom:0}
+#texto-modelo p + p,#texto-resultado p + p{margin-top:18px}
+.painel .tabela-rolagem{margin:22px 0;border-radius:8px}
+.painel figure{margin:24px 0}
+.painel .placeholder,.painel .espaco-figura{background:rgba(255,255,255,.025);border-color:rgba(160,195,235,.35);border-radius:8px}
+#painel-autores .painel-conteudo{background:transparent;border-left:0;padding:22px 0}
+#painel-autores .cartao{background:rgba(255,255,255,.035);border:0;border-radius:10px}
+@media (max-width: 750px){.painel-conteudo{padding:20px 18px;border-left-width:2px}
+.painel h3{margin-bottom:16px}}
+.subtopicos-resultados{display:grid;gap:58px;margin-top:clamp(65px, 10vh, 125px)}
+.subtopico-resultado{min-height:auto!important;padding:0 0 0 clamp(18px, 2.5vw, 32px)!important;border-left:3px solid #7db8f0;scroll-margin-top:90px}
+.subtopico-resultado h4{color:#a9d6ff;font-size:1.12rem;margin:28px 0 8px}
+.subtopico-resultado p{color:#e1eaf6;max-width:88ch;line-height:1.85;margin:0}
+.subtopico-resultado summary{display:flex;align-items:center;justify-content:space-between;gap:16px;cursor:pointer;list-style:none;color:#d3eaff;font-size:clamp(1.35rem, 2.4vw, 1.8rem);font-weight:700;padding:10px 0}
+.subtopico-resultado summary::-webkit-details-marker{display:none}
+.subtopico-resultado summary:focus-visible{outline:2px solid #a9d6ff;outline-offset:5px}
+.subtopico-resultado .seta-subtopico{font-size:1.6rem;color:#a9d6ff;transition:transform .25s ease}
+.subtopico-resultado[open] .seta-subtopico{transform:rotate(180deg)}
+.conteudo-subtopico{padding:10px 0 20px;animation:surgirTexto .35s ease both}
+.conteudo-subtopico h4:first-child{margin-top:0}
+@media (prefers-reduced-motion: reduce){.conteudo-subtopico{animation:none}}
+main{width:100%;margin:0;border:none;background:linear-gradient(90deg,
+        rgba(0, 3, 20, .23) 0%,
+        rgba(0, 3, 20, .07) 4%,
+        transparent 12%,
+        transparent 88%,
+        rgba(0, 3, 20, .07) 96%,
+        rgba(0, 3, 20, .23) 100%)}
+@media (max-width: 750px){main{width:100%}}
+main > section{padding-left:clamp(40px, 11vw, 180px);padding-right:clamp(40px, 11vw, 180px);min-height:85svh;padding-top:80px;padding-bottom:65px}
+.perfil{min-height:88svh;padding-top:105px;padding-bottom:50px}
+main > section#autores{min-height:0;padding-top:45px;padding-bottom:50px}
+@media (max-width: 750px){main > section{padding-left:32px;padding-right:32px;min-height:82svh;padding-top:95px;padding-bottom:50px}
+.perfil{min-height:85svh;padding:115px 32px 45px}
+main > section#autores{min-height:0;padding-top:40px;padding-bottom:45px}}
+main > section{box-sizing:border-box;padding-left:clamp(32px, 9vw, 160px);padding-right:clamp(32px, 9vw, 160px)}
+main > section > .botoes,main > section > .explicacoes,main > section > .subtopicos-resultados,main > section > .area-autores{width:100%;max-width:1120px;margin-left:auto;margin-right:auto;box-sizing:border-box}
+main > section .modelo{min-width:0}
+@media (max-width: 750px){main > section{padding-left:24px;padding-right:24px}}
+.subtopicos-experimento{width:100%;max-width:1120px;margin:28px auto 0;display:grid;gap:34px}
+.subtopicos-experimento .conteudo-subtopico p + p{margin-top:14px}
+main > section:not(#autores){min-height:0;padding-top:64px;padding-bottom:64px}
+main > section#autores{min-height:0;padding-top:38px;padding-bottom:42px}
+@media (max-width: 750px){main > section:not(#autores){min-height:0;padding-top:52px;padding-bottom:52px}
+main > section#autores{padding-top:32px;padding-bottom:36px}}
+
+/* Imagem e texto do painel de Árvore de Decisão */
+.figura-arvore{width:100%;max-width:790px;margin:0 auto 24px!important;text-align:center}
+.figura-arvore img{display:block;width:100%;height:auto;object-fit:contain;border-radius:10px;background:#fff}
+.figura-arvore figcaption{font-size:.84rem;line-height:1.5;color:#c4d9f2;margin-top:9px}
+#texto-modelo .lista-arvore{padding-left:1.5rem;margin:0 0 18px;color:#e1eaf6;line-height:1.75}
+#texto-modelo .lista-arvore li{margin:3px 0}
+#texto-modelo .lista-arvore strong{color:#a9d6ff}
+@media(max-width:750px){.figura-arvore{margin-bottom:18px!important}.figura-arvore figcaption{font-size:.76rem}#texto-modelo .lista-arvore{padding-left:1.2rem}}
+.imagem-resultado{display:block;width:100%;max-width:820px;height:auto;margin:0 auto;border-radius:10px;background:#fff}.painel figure{max-width:860px;margin:26px auto}.painel figcaption{text-align:center}
+
+/* Seção de integrantes */
+#autores .instrucao{margin-top:8px;margin-bottom:12px}
+.integrantes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;width:100%;max-width:1120px;margin:28px auto 0}
+.integrante{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;padding:28px 18px;border:1px solid rgba(144,202,249,.25);border-radius:16px;background:rgba(7,27,58,.62);box-shadow:0 12px 30px rgba(0,0,0,.12);transition:transform .2s,border-color .2s}
+.integrante:hover{transform:translateY(-4px);border-color:#90caf9}
+.foto-integrante{display:block;width:116px;height:116px;object-fit:cover;object-position:center;border-radius:50%;border:3px solid #90caf9;background:#0b2d60}
+.foto-inicial{display:grid;place-items:center;color:#dbeafe;font-size:2rem;font-weight:700;letter-spacing:.04em}
+.integrante h3{color:#eaf4ff;font-size:1.05rem;line-height:1.4;margin:18px 0 16px;min-height:2.8em;display:flex;align-items:center;justify-content:center}
+.links-integrante{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}
+.links-integrante a{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#0b2d60;border:1px solid #477ab6;color:#eaf4ff;text-decoration:none;font-weight:600;font-size:.88rem;transition:background .2s,border-color .2s}
+.links-integrante a:hover,.links-integrante a:focus-visible{background:#1976d2;border-color:#bbdefb;color:#fff}
+.links-integrante a span{font-weight:800;color:#90caf9}
+@media(max-width:900px){.integrantes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.integrantes{grid-template-columns:1fr;gap:16px}.integrante{padding:24px 16px}.integrante h3{min-height:0}.foto-integrante{width:108px;height:108px}}
+
+</style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Navegação principal">
+      <div class="links">
+        <a href="#inicio">Introdução</a>
+        <a href="#modelos">Modelos Utilizados</a>
+        <a href="#metodologia">Experimento</a>
+        <a href="#resultados">Resultados dos testes</a>
+        <a href="#autores">Integrantes</a>
+      </div>
+    </nav>
+    <div class="perfil" id="inicio">
+      <div class="texto">
+        <span class="etiqueta">Artigo técnico • Estrutura de Dados</span>
+        <h1>Comparativo entre Modelos de Aprendizado de Máquina</h1>
+        <p>Neste artigo, vamos conhecer Árvore de Decisão, Random Forest e XGBoost e comparar seu desempenho na detecção de ataques em redes.</p>
+        <div class="botão"><a class="contato" href="#modelos">Modelos Utilizados</a></div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="secao" id="modelos">
+      <h2>Modelos Utilizados</h2>
+      <p class="instrucao">Uma breve descrição de cada modelo e suas características principais.</p>
+      <div class="botoes" role="group" aria-label="Selecionar modelo">
+        <button class="modelo" type="button" data-modelo="arvore" aria-expanded="false" aria-controls="explicacao"><span class="simbolo" aria-hidden="true">♧</span>Árvore de Decisão</button>
+        <button class="modelo" type="button" data-modelo="floresta" aria-expanded="false" aria-controls="explicacao"><span class="simbolo" aria-hidden="true">♧ ♧</span>Random Forest</button>
+        <button class="modelo" type="button" data-modelo="xgboost" aria-expanded="false" aria-controls="explicacao"><span class="simbolo" aria-hidden="true">↗</span>XGBoost</button>
+      </div>
+      <div class="explicacoes">
+        <div id="explicacao" class="painel" aria-live="polite">
+          <div class="painel-interior"><div class="painel-conteudo"><h3 id="titulo-modelo"></h3><div id="texto-modelo"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloco-artigo" id="metodologia">
+      <h2>Como será realizado o experimento?</h2>
+      <p class="instrucao">Para comparar os três modelos, utilizaremos o conjunto de dados NSL-KDD.</p>
+      <div class="subtopicos-experimento">
+        <details class="subtopico-resultado">
+          <summary>O que é NSL-KDD? <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico">
+            <p>O <strong>NSL-KDD</strong> O NSL-KDD é um conjunto de dados muito utilizado em pesquisas e testes de aprendizado de máquina para a detecção de invasões em redes de computadores.</p>
+            <p>Ele contém registros de conexões classificados como tráfego normal ou ataques, com características como protocolo, serviço utilizado e quantidade de dados transmitidos. <strong>Por que utilizá-lo?</strong>.</p>
+            <h4>Por que utilizá-lo?</h4>
+            <p>Neste experimento, utilizaremos o NSL-KDD para treinar e avaliar os três modelos: Árvore de Decisão, Random Forest e XGBoost. O objetivo é ensinar os algoritmos a distinguir conexões normais de possíveis ataques e comparar seus desempenhos utilizando os mesmos dados.</p>
+          </div>
+        </details>
+        <details class="subtopico-resultado">
+          <summary>Nosso teste <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico"><p>---</p><p>---</p></div>
+        </details>
+        <details class="subtopico-resultado">
+          <summary>Metodologia <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico"><p>---</p><p>---</p></div>
+        </details>
+        <details class="subtopico-resultado">
+          <summary>Resultado esperado <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico"><p>---</p><p>---</p></div>
+        </details>
+      </div>
+    </section>
+
+    <section class="bloco-artigo" id="resultados">
+      <h2>Resultados do experimento</h2>
+      <p class="instrucao">Clique em cada botão para consultar os resultados obtidos com o conjunto NSL-KDD.</p>
+      <div class="botoes" role="group" aria-label="Selecionar resultado">
+        <button class="modelo resultado-botao" type="button" data-resultado="metricas" aria-expanded="false" aria-controls="painel-resultados"><span class="simbolo" aria-hidden="true">▤</span>Teste 1</button>
+        <button class="modelo resultado-botao" type="button" data-resultado="matriz" aria-expanded="false" aria-controls="painel-resultados"><span class="simbolo" aria-hidden="true">▦</span>Teste 2</button>
+        <button class="modelo resultado-botao" type="button" data-resultado="teste3" aria-expanded="false" aria-controls="painel-resultados"><span class="simbolo" aria-hidden="true">✦</span>Teste 3</button>
+      </div>
+      <div class="explicacoes">
+        <div id="painel-resultados" class="painel" aria-live="polite">
+          <div class="painel-interior"><div class="painel-conteudo"><h3 id="titulo-resultado"></h3><div id="texto-resultado"></div></div></div>
+        </div>
+      </div>
+      <div class="subtopicos-resultados">
+        <details class="subtopico-resultado" id="recomendacao">
+          <summary>Recomendação do grupo <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico">
+            <h4>Qual modelo escolhemos e por quê?</h4>
+            <p>[Escreva aqui o modelo recomendado e a justificativa com base nos resultados.]</p>
+            <h4>Uma decisão que não deu certo ou que decidimos não tomar</h4>
+            <p>[Escreva aqui a decisão do grupo e o motivo.]</p>
+          </div>
+        </details>
+        <details class="subtopico-resultado" id="surpresas">
+          <summary>O que mais nos surpreendeu <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+          <div class="conteudo-subtopico">
+            <p>[Escreva aqui o resultado mais inesperado do experimento e, se desejar, adicione gráficos ou imagens.]</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="bloco-artigo" id="autores">
+      <h2>Integrantes do grupo</h2>
+      <p class="instrucao">Ciência da Computação · Estruturas de Dados II</p>
+      <p class="instrucao">Conheça os integrantes e acesse seus perfis profissionais.</p>
+      <div class="integrantes">
+        <article class="integrante">
+          <img class="foto-integrante" src="../imagens/renata.jpg" alt="Foto de Renata Mayumi Iuvata" loading="lazy">
+          <h3>Renata Mayumi Iuvata</h3>
+          <div class="links-integrante">
+            <a href="https://github.com/Renata-mayumi" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Renata Mayumi Iuvata"><span aria-hidden="true">⌘</span> GitHub</a>
+            <a href="https://www.linkedin.com/in/renata-mayumi-iuvata-02a978362" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Renata Mayumi Iuvata"><span aria-hidden="true">in</span> LinkedIn</a>
+          </div>
+        </article>
+        <article class="integrante">
+          <div class="foto-integrante foto-inicial" role="img" aria-label="Foto de Breno Igor Ribeiro da Silva não fornecida">BR</div>
+          <h3>Breno Igor Ribeiro da Silva</h3>
+          <div class="links-integrante">
+            <a href="https://github.com/RedSwann" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Breno Igor Ribeiro da Silva"><span aria-hidden="true">⌘</span> GitHub</a>
+            <a href="https://www.linkedin.com/in/breno-ribeiro-a23669385" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Breno Igor Ribeiro da Silva"><span aria-hidden="true">in</span> LinkedIn</a>
+          </div>
+        </article>
+        <article class="integrante">
+          <img class="foto-integrante" src="../imagens/lukas.jpg" alt="Foto de Lukas Paulo Alves de Carvalho" loading="lazy">
+          <h3>Lukas Paulo Alves de Carvalho</h3>
+          <div class="links-integrante">
+            <a href="https://github.com/lukasalves007" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lukas Paulo Alves de Carvalho"><span aria-hidden="true">⌘</span> GitHub</a>
+            <a href="https://www.linkedin.com/in/lukas-paulo-3190072b3" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Lukas Paulo Alves de Carvalho"><span aria-hidden="true">in</span> LinkedIn</a>
+          </div>
+        </article>
+        <article class="integrante">
+          <img class="foto-integrante" src="../imagens/nick.jpg" alt="Foto de Ruan Abner Rodrigues Morales" loading="lazy">
+          <h3>Ruan Abner Rodrigues Morales</h3>
+          <div class="links-integrante">
+            <a href="https://github.com/ruan1717" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Ruan Abner Rodrigues Morales"><span aria-hidden="true">⌘</span> GitHub</a>
+            <a href="https://www.linkedin.com/in/ruan-morales-82326b2ab" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Ruan Abner Rodrigues Morales"><span aria-hidden="true">in</span> LinkedIn</a>
+          </div>
+        </article>
+        <article class="integrante">
+          <img class="foto-integrante" src="../imagens/isaque.jpg" alt="Foto de Isaque Ferreira de Jesus" loading="lazy">
+          <h3>Isaque Ferreira de Jesus</h3>
+          <div class="links-integrante">
+            <a href="https://github.com/Zakeerr" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Isaque Ferreira de Jesus"><span aria-hidden="true">⌘</span> GitHub</a>
+            <a href="https://www.linkedin.com/in/zakerr/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Isaque Ferreira de Jesus"><span aria-hidden="true">in</span> LinkedIn</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>Comparativo entre Modelos de Aprendizado de Máquina • Projeto acadêmico<br>Publicação: [data] • Revisão: [data] • Licença: [definir] • Repositório: [link] • Referências: [links a adicionar]</footer>
+  <script>
+    // Explicações exibidas ao selecionar um modelo.
+    const conteudos = {
+      arvore: {
+        titulo: 'Árvore de Decisão',
+        html: `<figure class="figura-arvore"><img src="imagem/ARVORE%20DE%20DECISAO.png" alt="Diagrama de Árvore de Decisão com condições A, B e C, caminhos Sim e Não e quatro resultados finais"><figcaption>Exemplo visual de uma Árvore de Decisão: cada resposta conduz a outra condição ou a um resultado.</figcaption></figure><p><strong>O que é?</strong> É um algoritmo de aprendizado de máquina que utiliza uma sequência de perguntas, geralmente de sim ou não, para classificar dados.</p><p><strong>Sua estrutura é formada por nós, ramos e folhas:</strong></p><ul class="lista-arvore"><li><strong>Nós:</strong> representam as perguntas ou condições.</li><li><strong>Ramos:</strong> representam os caminhos possíveis de cada resposta.</li><li><strong>Folhas:</strong> representam o resultado final da decisão.</li></ul><p><strong>Como funciona?</strong> O algoritmo analisa os dados e faz perguntas sucessivas. Cada resposta direciona para um novo caminho até chegar a uma classificação ou previsão.</p><p><strong>Quando usar?</strong> Quando precisamos classificar dados ou fazer previsões de forma simples e fácil de interpretar.</p><p><strong>Vantagem:</strong> fácil de entender e visualizar.</p><p><strong>Desvantagem:</strong> pode sofrer overfitting, ou seja, aprender detalhes excessivos dos dados de treinamento e ter dificuldade com novos dados.</p>`
+      },
+      floresta: {
+        titulo: 'Random Forest',
+        html: '<figure class="figura-arvore"><img src="imagem/RANDOM%20FOREST.png" alt="Diagrama explicativo do Random Forest" loading="lazy"></figure><p><strong>O que é?</strong> É um algoritmo de aprendizado de máquina que combina várias Árvores de Decisão para realizar classificações ou previsões, buscando resultados mais estáveis e precisos. </p><p><strong>Como funciona?</strong> Utiliza a técnica Bagging, treinando árvores com diferentes amostras dos dados (Bootstrap) e selecionando atributos aleatoriamente. Na classificação, combina as previsões das árvores por votação, reduzindo a variância. </p><p><strong>Quando usar?</strong> É indicado para problemas de classificação e regressão que envolvem dados complexos, principalmente quando uma única Árvore de Decisão apresenta resultados instáveis. </p>'
+      },
+      xgboost: {
+        titulo: 'XGBoost',
+        html: '<figure class="figura-arvore"><img src="imagem/Xgboost.png" alt="Diagrama explicativo do XGBoost" loading="lazy"></figure><p><strong>O que é?</strong> É um algoritmo de aprendizado de máquina que combina várias Árvores de Decisão construídas em sequência, buscando corrigir os erros anteriores e melhorar as previsões. </p><p><strong>Como funciona?</strong> Utiliza a técnica Gradient Boosting, em que cada nova árvore busca reduzir os erros das anteriores. A taxa de aprendizado controla a contribuição de cada árvore, enquanto a regularização, a profundidade máxima e o Early Stopping ajudam a evitar o overfitting. </p><p><strong>Quando usar?</strong> É indicado para problemas de classificação e regressão com dados complexos, como a identificação de possíveis ataques em redes. </p>'
+      }
+    };
+    const botoes = document.querySelectorAll('#modelos .modelo');
+    const painel = document.getElementById('explicacao');
+    const titulo = document.getElementById('titulo-modelo');
+    const texto = document.getElementById('texto-modelo');
+    let selecionado = null;
+    botoes.forEach(botao => {
+      botao.addEventListener('click', () => {
+        const chave = botao.dataset.modelo;
+        selecionado = selecionado === chave ? null : chave;
+        botoes.forEach(b => {
+          const ativo = b.dataset.modelo === selecionado;
+          b.classList.toggle('ativo', ativo);
+          b.setAttribute('aria-expanded', String(ativo));
+        });
+        if (selecionado) {
+          titulo.textContent = conteudos[selecionado].titulo;
+          texto.innerHTML = conteudos[selecionado].html;
+
+          painel.classList.remove('animar-texto');
+          void painel.offsetWidth;
+          painel.classList.add('animar-texto');
+        } else {
+          painel.classList.remove('animar-texto');
+        }
+        painel.classList.toggle('aberto', selecionado !== null);
+      });
+    });
+
+    // Resultados obtidos no NSL-KDD.
+    const resultados = {
+      metricas: {
+        titulo: 'Teste 1 — Comparação dos modelos',
+        html: `<p>Os três modelos foram avaliados com os mesmos dados de teste. A tabela mostra a acurácia, precisão, recall, F1-score e tempo de treinamento.</p>
+          <div class="tabela-rolagem"><table>
+            <thead><tr><th>Modelo</th><th>Acurácia</th><th>Precisão</th><th>Recall</th><th>F1-score</th><th>Treino (s)</th></tr></thead>
+            <tbody>
+              <tr><td>Árvore de Decisão</td><td>78,53%</td><td>96,75%</td><td>64,44%</td><td>77,36%</td><td>6,37</td></tr>
+              <tr><td>Random Forest</td><td>77,76%</td><td>96,90%</td><td>62,95%</td><td>76,32%</td><td>33,98</td></tr>
+              <tr><td><strong>XGBoost</strong></td><td><strong>79,46%</strong></td><td>96,85%</td><td><strong>66,06%</strong></td><td><strong>78,55%</strong></td><td><strong>6,31</strong></td></tr>
+            </tbody>
+          </table></div>
+          <p>O XGBoost obteve a maior acurácia, recall e F1-score. O Random Forest apresentou a maior precisão.</p>`
+      },
+      matriz: {
+        titulo: 'Teste 2 — Matrizes de confusão',
+        html: `<p>As matrizes mostram quantas conexões foram classificadas corretamente e quantas foram confundidas. Um <strong>falso positivo</strong> é um alerta de ataque por engano; um <strong>falso negativo</strong> é um ataque que não foi identificado.</p>
+          <figure><img class="imagem-resultado" src="imagem/Confus%C3%A3o%20-%20arvore.png" alt="Matriz de confusão da Árvore de Decisão" loading="lazy"><figcaption>Árvore de Decisão — acertos e erros de classificação.</figcaption></figure>
+          <figure><img class="imagem-resultado" src="imagem/Confusao%20-%20forest.png" alt="Matriz de confusão do Random Forest" loading="lazy"><figcaption>Random Forest — acertos e erros de classificação.</figcaption></figure>
+          <figure><img class="imagem-resultado" src="imagem/Confusao%20-%20XGBoost.png" alt="Matriz de confusão do XGBoost" loading="lazy"><figcaption>XGBoost — acertos e erros de classificação.</figcaption></figure>`
+      },
+      teste3: {
+        titulo: 'Teste 3 — Gráficos comparativos',
+        html: `<p>Os gráficos ajudam a comparar o desempenho dos três modelos. Valores maiores de recall indicam que mais ataques foram identificados.</p>
+          <figure><img class="imagem-resultado" src="imagem/Comparativo%20-%20geral.png" alt="Gráfico comparativo das métricas dos três modelos" loading="lazy"><figcaption>Comparação das métricas de desempenho.</figcaption></figure>
+          <figure><img class="imagem-resultado" src="imagem/Comparativo%20-%20Tempo.png" alt="Gráfico comparativo dos tempos de treinamento" loading="lazy"><figcaption>Comparação do tempo de treinamento dos modelos.</figcaption></figure>
+          <p>O XGBoost apresentou o melhor resultado geral neste experimento, enquanto o Random Forest levou mais tempo para treinar.</p>`
+      }
+    };
+
+    const botoesResultado = document.querySelectorAll('.resultado-botao');
+    const painelResultado = document.getElementById('painel-resultados');
+    let resultadoSelecionado = null;
+    botoesResultado.forEach(botao => {
+      botao.addEventListener('click', () => {
+        const chave = botao.dataset.resultado;
+        resultadoSelecionado = resultadoSelecionado === chave ? null : chave;
+        botoesResultado.forEach(b => {
+          const ativo = b.dataset.resultado === resultadoSelecionado;
+          b.classList.toggle('ativo', ativo);
+          b.setAttribute('aria-expanded', String(ativo));
+        });
+        if (resultadoSelecionado) {
+          document.getElementById('titulo-resultado').textContent = resultados[resultadoSelecionado].titulo;
+          document.getElementById('texto-resultado').innerHTML = resultados[resultadoSelecionado].html;
+          painelResultado.classList.remove('animar-texto');
+          void painelResultado.offsetWidth;
+          painelResultado.classList.add('animar-texto');
+        } else {
+          painelResultado.classList.remove('animar-texto');
+        }
+        painelResultado.classList.toggle('aberto', resultadoSelecionado !== null);
+      });
+    });
+
+  </script>
+</body>
+</html>
