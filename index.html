@@ -264,19 +264,11 @@ main > section#autores{padding-top:32px;padding-bottom:36px}}
         </div>
       </div>
       <div class="subtopicos-resultados">
-        <details class="subtopico-resultado" id="recomendacao">
-          <summary>Recomendação do grupo <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
+        <details class="subtopico-resultado" id="conclusao">
+          <summary>Conclusão <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
           <div class="conteudo-subtopico">
-            <h4>Qual modelo escolhemos e por quê?</h4>
-            <p>[Escreva aqui o modelo recomendado e a justificativa com base nos resultados.]</p>
-            <h4>Uma decisão que não deu certo ou que decidimos não tomar</h4>
-            <p>[Escreva aqui a decisão do grupo e o motivo.]</p>
-          </div>
-        </details>
-        <details class="subtopico-resultado" id="surpresas">
-          <summary>O que mais nos surpreendeu <span class="seta-subtopico" aria-hidden="true">⌄</span></summary>
-          <div class="conteudo-subtopico">
-            <p>[Escreva aqui o resultado mais inesperado do experimento e, se desejar, adicione gráficos ou imagem.]</p>
+            <p>Após comparar os três modelos, escolhemos o <strong>XGBoost</strong>, pois apresentou o melhor desempenho geral no experimento. Ele obteve <strong>79,46% de acurácia</strong>, <strong>66,06% de recall</strong> e <strong>78,55% de F1-score</strong>, além do menor tempo de treinamento nesta execução.</p>
+            <p>O que mais nos surpreendeu foi o <strong>Random Forest</strong>: apesar de combinar várias árvores e apresentar a maior precisão, teve o maior tempo de treinamento e o menor recall. Também observamos que nenhum modelo conseguiu identificar todos os ataques, mostrando que ainda existem limitações na detecção.</p>
           </div>
         </details>
       </div>
